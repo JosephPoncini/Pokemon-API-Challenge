@@ -10,6 +10,12 @@
 
 <body class="bg-ash">
 
+    <!-- drawer component -->
+    <div id="drawer-example"
+        class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800"
+        tabindex="-1" aria-labelledby="drawer-label">
+    </div>
+
     <div class="font-content text-white h-full w-full flex flex-col items-center px-16 py-8 space-y-5 > *">
         <h1 class="text-3xl  font-title">
             POKÉMANAC
@@ -20,34 +26,31 @@
         <input id="search" class="ring-0">
 
         <div class="buttons flex flex-col lg:flex-row space-y-8 lg:space-y-0">
-            <button type="button"
-                class="greenBtn">Random</button>
-            <button type="button"
-                class="blueBtn">Search</button>
-            <button type="button"
-                class="redBtn">Favorite</button>
+            <button id="randomBtn" type="button" class="greenBtn">Random</button>
+            <button id="searchBtn" type="button" class="blueBtn">Search</button>
+            <button id="favoritesBtn" type="button" class="redBtn" data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example">Favorites</button>
         </div>
 
         <div class="flex flex-row items-start">
-            <img class="w-[300px]" src="../assets/pikachu.png" alt="pokemon">
-            <img class="w-8" src="../assets/Sparkle.png" alt="">
+            <img id="pokemonImage" class="w-[300px]" src="../assets/pikachu.png" alt="pokemon">
+            <img id="shinyBtn" class="w-8" src="../assets/Sparkle.png" alt="">
         </div>
 
         <div class="flex flex-row items-baseline justify-between space-x-[30px]">
-            <h3 class="text-xl">#25</h3>
-            <h2 class="text-2xl ">Pikachu</h2>
-            <img src="../assets/Heart.png" alt="heart">
+            <h3 id="indexNumber" class="text-xl">#25</h3>
+            <h2 id="pokemonTitle" class="text-2xl ">Pikachu</h2>
+            <img class="w-[25px]" id="heartBtn" src="../assets/Heart.png" alt="heart">
         </div>
 
         <div class="flex flex-col lg:flex-row text-lg md:text-xl px-10 xl:px-60 space-y-5">
             <div class="lg:w-1/2 space-y-4 ^ *">
-                <div class="text-xl">
+                <div id="descriptionTxt" class="text-xl">
                     When several of these POKéMON gather, their electricity could build and cause lightning storms.
                 </div>
-                <div class= "hidden text-xl underline lg:block ">
+                <div class="hidden text-xl underline lg:block ">
                     Evolutions
                 </div>
-                <div class="flex flex-row justify-center items-baseline">
+                <div id="evolutionContainer" class="flex flex-row justify-center items-baseline">
                     <div>
                         <div><img class="w-[75px]" src="../assets/pichu.gif" alt="pokemon sprite"></div>
                         <div class="flex justify-center">Pichu</div>
@@ -72,31 +75,46 @@
             <div class="lg:w-1/2 space-y-4 ^ *">
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Gen:</div>
-                    <div class="w-[60%] ml-4">First</div>
+                    <div id="genTxt" class="w-[60%] ml-4">First</div>
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Type:</div>
-                    <div class="w-[60%] ml-4 flex ">
+                    <div id="typeContainer" class="w-[60%] ml-4 flex ">
                         <img class="w-[25px]" src="../assets/elementTypes/electric-type-iconpng.png" alt="">
                         <div class="ml-[10px]">Electric</div>
                     </div>
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Location:</div>
-                    <div class="w-[60%] ml-4"> Trophy Garden</div>
+                    <div id="locationTxt" class="w-[60%] ml-4"> Trophy Garden</div>
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Abilities:</div>
-                    <div class="w-[60%] ml-4"> Static, Lightning Rod</div>
+                    <div id="abilitiesTxt" class="w-[60%] ml-4"> Static, Lightning Rod</div>
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Moves:</div>
-                    <div class="w-[60%] h-[90px] ml-4 border-2 border-white overflow-y-auto">Mega Punch, Pay Day, Thunder Punch, Slam, Double Kick, Mega Kick, Headbutt, Body Slam, Take Down, Double Edge, Tail Whip, Growl, Surf, Submission, Counter, Seismic Toss, Strength, Thunder Shock, Thunderbolt, Thunder Wave, Thunder, Dig, Toxic, Agility, Quick Attack, Rage, Mimic, Double Team, Defense Curl, Light Screen, Reflect, Bide, Swift, Skull Bash, Flash, Rest, Substitute, Thief, Snore, Curse, Reversal, Protect, Sweet Kiss, Mud Slap, Zap Cannon, Detect, Endure, Charm, Rollout, Swagger, Spark, Attract, Sleep Talk, Return, Frustration, Dynamic Punch, Encore, Iron Tail, Hidden Power, Rain Dance, Rock Smash, Uproar, Facade, Focus Punch, Charge, Helping Hand, Brick Break, Knock Off, Endeavor, Secret Power, Fake Tears, Signal Beam, Covet, Volt Tackle, Calm Mind, Shock Wave, Natural Gift, Feint, Fling, Magnet Rise, Nasty Plot, Discharge, Captivate, Grass Knot, Charge Beam, Electro Ball, Round, Echoed Voice, Volt Switch, Electroweb, Wild Charge, Disarming Voice, Draining Kiss, Play Rough, Play Nice, Confide, Eerie Impulse, Electric Terrain, Nuzzle, Laser Focus, Rising Voltage, Tera Blast, Trailblaze, Alluring Voice, Upper Hand</div>
+                    <div id="movesTxt" class="w-[60%] h-[90px] ml-4 border-2 border-white overflow-y-auto">Mega Punch,
+                        Pay Day, Thunder Punch, Slam, Double Kick, Mega Kick, Headbutt, Body Slam, Take Down, Double
+                        Edge, Tail Whip, Growl, Surf, Submission, Counter, Seismic Toss, Strength, Thunder Shock,
+                        Thunderbolt, Thunder Wave, Thunder, Dig, Toxic, Agility, Quick Attack, Rage, Mimic, Double Team,
+                        Defense Curl, Light Screen, Reflect, Bide, Swift, Skull Bash, Flash, Rest, Substitute, Thief,
+                        Snore, Curse, Reversal, Protect, Sweet Kiss, Mud Slap, Zap Cannon, Detect, Endure, Charm,
+                        Rollout, Swagger, Spark, Attract, Sleep Talk, Return, Frustration, Dynamic Punch, Encore, Iron
+                        Tail, Hidden Power, Rain Dance, Rock Smash, Uproar, Facade, Focus Punch, Charge, Helping Hand,
+                        Brick Break, Knock Off, Endeavor, Secret Power, Fake Tears, Signal Beam, Covet, Volt Tackle,
+                        Calm Mind, Shock Wave, Natural Gift, Feint, Fling, Magnet Rise, Nasty Plot, Discharge,
+                        Captivate, Grass Knot, Charge Beam, Electro Ball, Round, Echoed Voice, Volt Switch, Electroweb,
+                        Wild Charge, Disarming Voice, Draining Kiss, Play Rough, Play Nice, Confide, Eerie Impulse,
+                        Electric Terrain, Nuzzle, Laser Focus, Rising Voltage, Tera Blast, Trailblaze, Alluring Voice,
+                        Upper Hand</div>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <script type="module" src="./scripts/app.js"></script>
     <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
 </body>
 
