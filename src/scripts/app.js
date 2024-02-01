@@ -49,13 +49,13 @@ shinyBtn.addEventListener("click", () => {
 
     if (!isShiny) {
         isShiny = true;
-        shinyBtn.src = "../assets/SparkleShiny.png";
+        shinyBtn.src = "./assets/SparkleShiny.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_shiny;
         saveToLocalStorageShiny(pokemon.name);
         GetEvolutions();
     } else {
         isShiny = false;
-        shinyBtn.src = "../assets/Sparkle.png";
+        shinyBtn.src = "./assets/Sparkle.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
         removeFromLocalStorageShiny(pokemon.name)
         GetEvolutions();
@@ -71,13 +71,13 @@ heartBtn.addEventListener("click", () => {
 const heart = () => {
     if (!isFavorited) {
         isFavorited = true;
-        heartBtn.src = "../assets/HeartFilled.png";
+        heartBtn.src = "./assets/HeartFilled.png";
         saveToLocalStorage(pokemonGlobalName + "," + pokemonGlobalID);
         RefreshFavorites();
 
     } else {
         isFavorited = false;
-        heartBtn.src = "../assets/Heart.png";
+        heartBtn.src = "./assets/Heart.png";
         removeFromLocalStorage(pokemonGlobalName + "," + pokemonGlobalID)
         RefreshFavorites();
     }
@@ -125,10 +125,10 @@ const AddToFavorites = (pokemonName, pokemonID) => {
         let favorites = getlocalStorage();
         if (favorites.includes(pokemonGlobalName + "," + pokemonGlobalID)) {
             isFavorited = true;
-            heartBtn.src = "../assets/HeartFilled.png";
+            heartBtn.src = "./assets/HeartFilled.png";
         } else {
             isFavorited = false;
-            heartBtn.src = "../assets/Heart.png";
+            heartBtn.src = "./assets/Heart.png";
         };
     });
 
@@ -191,20 +191,20 @@ const LoadOut = async (pokemonName) => {
 
     if (shinies.includes(pokemon.name)) {
         isShiny = true;
-        shinyBtn.src = "../assets/SparkleShiny.png";
+        shinyBtn.src = "./assets/SparkleShiny.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_shiny;
     } else {
         isShiny = false;
-        shinyBtn.src = "../assets/Sparkle.png";
+        shinyBtn.src = "./assets/Sparkle.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
     };
 
     if (favorites.includes(pokemonGlobalName + "," + pokemonGlobalID)) {
         isFavorited = true;
-        heartBtn.src = "../assets/HeartFilled.png";
+        heartBtn.src = "./assets/HeartFilled.png";
     } else {
         isFavorited = false;
-        heartBtn.src = "../assets/Heart.png";
+        heartBtn.src = "./assets/Heart.png";
     };
 }
 
