@@ -12,8 +12,22 @@
 
     <!-- drawer component -->
     <div id="drawer-example"
-        class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800"
+        class="fixed top-0 left-0 z-40 h-full p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800"
         tabindex="-1" aria-labelledby="drawer-label">
+        <div id="favoritesContainer" class="container font-content text-2xl">
+            <div class="flex justify-center items-center">
+                <div class="title">
+                    Favorites
+                </div>
+            </div>
+
+            <!-- <div class="favoriteExample flex justify-between border-black border-t-2 border-b-2 px-2">
+                <div class="fpokemon">Pikachu</div>
+                <div class="fpokemonId">#25</div>
+                <strong class="exit text-red-600">X</strong>
+            </div> -->
+
+        </div>
     </div>
 
     <div class="font-content text-white h-full w-full flex flex-col items-center px-16 py-8 space-y-5 > *">
@@ -51,8 +65,9 @@
                 <div class="hidden text-xl underline lg:block ">
                     Evolutions
                 </div>
-                <div id="evolutionContainer" class="flex flex-col justify-start w-[100%] h-[250px] ml-4 border-2 border-white overflow-y-auto space-y-5 ^ *">
-                    <div class="flex flex-row justify-center"> 
+                <div id="evolutionContainer"
+                    class="flex flex-col justify-start w-[100%] h-[250px] lg:ml-4 border-2 border-white overflow-y-auto space-y-5 ^ *">
+                    <div class="flex flex-row justify-center">
                         <div class="flex flex-col justify-end">
                             <div><img class="w-[75px]" src="../assets/pichu.gif" alt="pokemon sprite"></div>
                             <div class="flex justify-center">Pichu</div>
@@ -83,7 +98,7 @@
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[40%] flex justify-end">Type:</div>
-                    <div id="typeContainer" class="w-[60%] ml-4 flex ">
+                    <div id="typeContainer" class="w-[60%] ml-4 flex flex-col md:flex-row items-center space-y-4 ^ * md:space-y-0 ^ *">
                         <img class="h-[30px]" src="../assets/elementTypes/electric.png" alt="">
                     </div>
                 </div>
@@ -95,9 +110,10 @@
                     <div class="w-[40%] flex justify-end">Abilities:</div>
                     <div id="abilitiesTxt" class="w-[60%] ml-4"> Static, Lightning Rod</div>
                 </div>
-                <div class="flex flex-row">
-                    <div class="w-[40%] flex justify-end">Moves:</div>
-                    <div id="movesTxt" class="w-[60%] h-[170px] ml-4 border-2 border-white overflow-y-auto">Mega Punch,
+                <div class="flex flex-col lg:flex-row">
+                    <div class="w-[40%] flex justify-end mb-4">Moves:</div>
+                    <div id="movesTxt" class="lg:w-[60%] h-[170px] lg:ml-4 border-2 border-white overflow-y-auto">Mega
+                        Punch,
                         Pay Day, Thunder Punch, Slam, Double Kick, Mega Kick, Headbutt, Body Slam, Take Down, Double
                         Edge, Tail Whip, Growl, Surf, Submission, Counter, Seismic Toss, Strength, Thunder Shock,
                         Thunderbolt, Thunder Wave, Thunder, Dig, Toxic, Agility, Quick Attack, Rage, Mimic, Double Team,

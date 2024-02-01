@@ -1,5 +1,6 @@
 //Local Storage Functions
 
+    //Favorites
 const saveToLocalStorage = (pokemon) => {
     
     let favorites = getlocalStorage();  
@@ -35,6 +36,43 @@ const removeFromLocalStorage = (pokemon) => {
 
 }
 
+    //shiny
+
+const saveToLocalStorageShiny = (pokemon) => {
+    
+    let shinies = getlocalStorage();  
+      
+    if(!shinies.includes(pokemon)) {
+        shinies.push(pokemon);
+    }
+    
+    localStorage.setItem("Shiny", JSON.stringify(shinies));
+}
+
+const getlocalStorageShiny  = () => {
+    
+    let localStorageData = localStorage.getItem("Shiny");
+
+    if(localStorageData == null){
+        return [];
+    }
+    
+    return JSON.parse(localStorageData);
+
+}
+
+const removeFromLocalStorageShiny  = (pokemon) => {
+    
+    let shinies = getlocalStorageShiny();
+
+    let namedIndex = shinies.indexOf(pokemon);
+
+    shinies.splice(namedIndex, 1);
+
+    localStorage.setItem("Shiny", JSON.stringify(shinies))
+
+}
+
 //Miscellaneous Functions
 
 const titleCase = (str) => {
@@ -46,4 +84,4 @@ const titleCase = (str) => {
     });
 }
 
-export {saveToLocalStorage, getlocalStorage, removeFromLocalStorage, titleCase};
+export {saveToLocalStorage, getlocalStorage, removeFromLocalStorage, saveToLocalStorageShiny, getlocalStorageShiny, removeFromLocalStorageShiny, titleCase};

@@ -1,4 +1,4 @@
-import { saveToLocalStorage, getlocalStorage, removeFromLocalStorage, titleCase } from "./functions.js"
+import { saveToLocalStorage, getlocalStorage, removeFromLocalStorage, titleCase, saveToLocalStorageShiny, getlocalStorageShiny, removeFromLocalStorageShiny } from "./functions.js"
 
 //Initialize Things from documnet
 
@@ -11,6 +11,7 @@ let shinyBtn = document.getElementById("shinyBtn");
 let heartBtn = document.getElementById("heartBtn");
 
 //Initialize Elements
+let favoritesContainer = document.getElementById("favoritesContainer");
 let pokemonImage = document.getElementById("pokemonImage");
 let indexNumber = document.getElementById("indexNumber");
 let pokemonTitle = document.getElementById("pokemonTitle");
@@ -28,7 +29,8 @@ let pokemon;
 let pokemonSpecies;
 let pokemonEncounter;
 let pokemonEvolutionChain;
-let pokemonName = "pikachu";
+let pokemonGlobalName = "Pikachu";
+let pokemonGlobalID = "#25";
 
 let isShiny = false;
 let isFavorited = false;
@@ -40,81 +42,75 @@ shinyBtn.addEventListener("click", () => {
         isShiny = true;
         shinyBtn.src = "../assets/SparkleShiny.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_shiny;
+        saveToLocalStorageShiny(pokemon.name);
         GetEvolutions();
     } else {
         isShiny = false;
         shinyBtn.src = "../assets/Sparkle.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
+        removeFromLocalStorageShiny(pokemon.name)
         GetEvolutions();
     }
 });
 
 heartBtn.addEventListener("click", () => {
+
+    heart();
+
+})
+
+const heart = () => {
     if (!isFavorited) {
         isFavorited = true;
         heartBtn.src = "../assets/HeartFilled.png";
         saveToLocalStorage(pokemon.name);
+        AddToFavorites();
     } else {
         isFavorited = false;
         heartBtn.src = "../assets/Heart.png";
         removeFromLocalStorage(pokemon.name)
     }
-})
+}
 
-favoritesBtn.addEventListener('click', () => {
-    //This retrieves our data from local storage and stores it into favorites variable.
-    let favorites = getlocalStorage();
+const RemoveFromFavorites = () => {
 
-    // Clears getFAvoritesDiv so the Array display will not constantly repeat.
-    getFavoritesDiv.textContent = "";
+}
 
-    //map through each element in our array 
-    favorites.map(digiName => {
-        //Creating a P-tag Dynamically
-        let p = document.createElement('p');
+const AddToFavorites = () => {
+    const newFavorite = document.createElement("div");
+    newFavorite.classList = "flex justify-between border-black border-t-2 border-b-2 px-2";
+    newFavorite.id = pokemonGlobalName;
 
-        //Setting its text content to digiName
-        p.textContent = digiName;
+    const favoritePokemon = document.createElement("div");
+    favoritePokemon.innerText = pokemonGlobalName;
 
-        // className replaces all classes with out new classes
-        p.className = "text-lg font-medium text-gray-900 dark:text-white";
+    const favoritePokemonID = document.createElement("div");
+    favoritePokemonID.innerText = pokemonGlobalID;
 
-        //Creating a button dynamically
-        let button = document.createElement('button');
+    const exitBtn = document.createElement("strong");
+    exitBtn.classList = "text-red-600";
+    exitBtn.innerText = "X"
 
-        button.type = "button"
-        button.textContent = "X";
+    exitBtn.addEventListener("click", function() {
 
-        //classList allows us to be a little more concise it doesn't replace all classes.
-        button.classList.add(
-            "text-gray-400",
-            "bg-transparent",
-            "hover:bg-gray-200",
-            "hover:text-gray-900",
-            "rounded-lg",
-            "text-sm",
-            "w-8",
-            "h-8",
-            "justify-end",
-            "dark:hover:bg-gray-600",
-            "dark:hover:text-white"
-        );
+        removeFromLocalStorage(newFavorite.id)
+        // let favorites = getlocalStorage();
+        
+        newFavorite.remove();
+    });
 
-        //creating an addEventListner for our button which removes digiName from our favorites
-        button.addEventListener('click', () => {
+    newFavorite.appendChild(favoritePokemon);
+    newFavorite.appendChild(favoritePokemonID);
+    newFavorite.appendChild(exitBtn);
 
-            removeFromLocalStorage(digiName);
+    favoritesContainer.appendChild(newFavorite);
+}
 
-            p.remove();
-        })
-        // appending our button to our p-tag
-        p.append(button);
-        //appending our p-tag to our FavoritesDiv
-        getFavoritesDiv.append(p);
-    })
-
-
-})
+// <div class="favoriteExample flex justify-between border-black border-t-2 border-b-2 px-2">
+//     <div class="fpokemon">Pikachu</div>
+//     <div class="fpokemonId">#25</div>
+//     <div class="exit text-red-600"><strong>X</strong></div>
+// </div>
 
 //search functions
 
@@ -123,9 +119,21 @@ favoritesBtn.addEventListener('click', () => {
 searchBtn.addEventListener('click', async (event) => {
     //On enter I want this function to run
 
-    let pokemonName = search.value.toLowerCase();
+    let pokemonName = search.value;
+    await LoadOut(pokemonName);
+})
 
+search.addEventListener('keydown', async (event) => {
+    //On enter I want this function to run
+    if (event.key === "Enter") {
 
+        let pokemonName = event.target.value;
+        await LoadOut(pokemonName);
+    }
+})
+
+const LoadOut = async (pokemonName) => {
+    pokemonName = pokemonName.toLowerCase();
     pokemonSpecies = await pokemonSpeciesApi(pokemonName);
     pokemon = await pokemonApi(pokemonName);
     pokemonEncounter = await pokemonEncounterApi(pokemonName);
@@ -134,8 +142,12 @@ searchBtn.addEventListener('click', async (event) => {
 
 
     pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
-    indexNumber.innerText = "#" + pokemon.id;
-    pokemonTitle.innerText = titleCase(pokemon.name);
+
+    pokemonGlobalID = "#" + pokemon.id;
+    indexNumber.innerText = pokemonGlobalID;
+
+    pokemonGlobalName = titleCase(pokemon.name);
+    pokemonTitle.innerText = pokemonGlobalName;
 
     descriptionTxt.innerText = GetDescription();
     genTxt.innerText = GetGeneration();
@@ -144,35 +156,28 @@ searchBtn.addEventListener('click', async (event) => {
     movesTxt.innerText = GetMoves();
     GetTypes();
     GetEvolutions();
-})
 
-search.addEventListener('keydown', async (event) => {
-    //On enter I want this function to run
-    if (event.key === "Enter") {
+    let shinies = getlocalStorageShiny();
+    let favorites = getlocalStorage();
 
-        let pokemonName = event.target.value.toLowerCase();
-
-        pokemonSpecies = await pokemonSpeciesApi(pokemonName);
-        pokemon = await pokemonApi(pokemonName);
-        pokemonEncounter = await pokemonEncounterApi(pokemonName);
-        let url = pokemonSpecies.evolution_chain.url;
-        pokemonEvolutionChain = await pokemonEvolutionChainApi(url);
-
-
+    if (shinies.includes(pokemon.name)) {
+        isShiny = true;
+        shinyBtn.src = "../assets/SparkleShiny.png";
+        pokemonImage.src = pokemon.sprites.other["official-artwork"].front_shiny;
+    } else {
+        isShiny = false;
+        shinyBtn.src = "../assets/Sparkle.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
-        indexNumber.innerText = "#" + pokemon.id;
-        pokemonTitle.innerText = titleCase(pokemon.name);
+    };
 
-        descriptionTxt.innerText = GetDescription();
-        genTxt.innerText = GetGeneration();
-        locationTxt.innerText = GetLocation();
-        abilitiesTxt.innerText = GetAbilities();
-        movesTxt.innerText = GetMoves();
-        GetTypes();
-        GetEvolutions();
-    }
-})
-
+    if (favorites.includes(pokemon.name)) {
+        isFavorited = true;
+        heartBtn.src = "../assets/HeartFilled.png";
+    } else {
+        isFavorited = false;
+        heartBtn.src = "../assets/Heart.png";
+    };
+}
 
 //Get Functions
 
@@ -329,81 +334,81 @@ const GetEvolutions = async () => {
 
     let evolution = pokemonEvolutionChain.chain;
 
-    if(evolution.evolves_to[0]){
-    let counter = 0;
-    let anotherBranch = false;
-    while (evolution.evolves_to[counter] || anotherBranch) {
+    if (evolution.evolves_to[0]) {
+        let counter = 0;
+        let anotherBranch = false;
+        while (evolution.evolves_to[counter] || anotherBranch) {
 
-        let evolutionLine = document.createElement("div");
+            let evolutionLine = document.createElement("div");
 
-        const GetNextEvo = async (evolution) => {
+            const GetNextEvo = async (evolution) => {
 
+                let pokemonEvoGif = document.createElement("img");
+                pokemonEvoGif.classList = "w-[75px]";
+                let pokemonEvoTitle = document.createElement("div");
+                pokemonEvoTitle.classList = "flex justify-center";
+                let arrowContainer = document.createElement("div");
+                arrowContainer.classList = "flex items-center mx-5";
+                let arrow = document.createElement("div");
+                arrow.innerText = "=>";
+                arrow.classList = "text-3xl"
+                let pokemonContainer = document.createElement("div");
+                pokemonContainer.classList = "flex flex-col justify-end";
+
+
+                arrowContainer.appendChild(arrow);
+                evolutionLine.appendChild(arrowContainer);
+                pokemonEvoGif.src = await GetSprite(evolution.species.name);
+                pokemonEvoTitle.innerText = evolution.species.name;
+                pokemonContainer.appendChild(pokemonEvoGif);
+                pokemonContainer.appendChild(pokemonEvoTitle);
+                evolutionLine.appendChild(pokemonContainer);
+                evolutionLine.className = "flex flex-row justify-center";
+
+                let counter = 0;
+
+                if (anotherBranch) {
+                    counter++;
+                    anotherBranch = false;
+                }
+
+                if (evolution.evolves_to[counter]) {
+
+                    await GetNextEvo(evolution.evolves_to[counter])
+                    counter++;
+                }
+                if (evolution.evolves_to[counter]) {
+                    anotherBranch = true;
+                }
+
+                evolutionContainer.appendChild(evolutionLine);
+            }
             let pokemonEvoGif = document.createElement("img");
             pokemonEvoGif.classList = "w-[75px]";
             let pokemonEvoTitle = document.createElement("div");
             pokemonEvoTitle.classList = "flex justify-center";
-            let arrowContainer = document.createElement("div");
-            arrowContainer.classList = "flex items-center mx-5";            
-            let arrow = document.createElement("div");
-            arrow.innerText = "=>";
-            arrow.classList = "text-3xl"            
             let pokemonContainer = document.createElement("div");
             pokemonContainer.classList = "flex flex-col justify-end";
+            await GetNextEvo(evolution.evolves_to[counter])
 
 
-            arrowContainer.appendChild(arrow);
-            evolutionLine.appendChild(arrowContainer);
             pokemonEvoGif.src = await GetSprite(evolution.species.name);
             pokemonEvoTitle.innerText = evolution.species.name;
             pokemonContainer.appendChild(pokemonEvoGif);
             pokemonContainer.appendChild(pokemonEvoTitle);
-            evolutionLine.appendChild(pokemonContainer);
-            evolutionLine.className = "flex flex-row justify-center";
-
-            let counter = 0;
-
-            if(anotherBranch){
-                counter++;
-                anotherBranch = false;
-            }
-
-            if (evolution.evolves_to[counter]) {
-
-                await GetNextEvo(evolution.evolves_to[counter])
-                counter++;
-            }
-            if (evolution.evolves_to[counter]) {
-                anotherBranch = true;
-            }
-
+            evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
             evolutionContainer.appendChild(evolutionLine);
+            evolutionLine.className = "flex flex-row justify-center";
+            if (!anotherBranch) { counter++; };
+
+
         }
-        let pokemonEvoGif = document.createElement("img");
-        pokemonEvoGif.classList = "w-[75px]";
-        let pokemonEvoTitle = document.createElement("div");
-        pokemonEvoTitle.classList = "flex justify-center";         
-        let pokemonContainer = document.createElement("div");
-        pokemonContainer.classList = "flex flex-col justify-end";
-        await GetNextEvo(evolution.evolves_to[counter])
-
-
-        pokemonEvoGif.src = await GetSprite(evolution.species.name);
-        pokemonEvoTitle.innerText = evolution.species.name;
-        pokemonContainer.appendChild(pokemonEvoGif);
-        pokemonContainer.appendChild(pokemonEvoTitle);
-        evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
-        evolutionContainer.appendChild(evolutionLine);
-        evolutionLine.className = "flex flex-row justify-center";
-        if(!anotherBranch){counter++;};
-
-
-    }
-    }else{
+    } else {
         let evolutionLine = document.createElement("div");
         let pokemonEvoGif = document.createElement("img");
         pokemonEvoGif.classList = "w-[75px]";
         let pokemonEvoTitle = document.createElement("div");
-        pokemonEvoTitle.classList = "flex justify-center";         
+        pokemonEvoTitle.classList = "flex justify-center";
         let pokemonContainer = document.createElement("div");
         pokemonContainer.classList = "flex flex-col justify-end";
 
@@ -454,13 +459,8 @@ const pokemonEvolutionChainApi = async (url) => {
 }
 
 
-pokemon = await pokemonApi(pokemonName);
-pokemonSpecies = await pokemonSpeciesApi(pokemonName);
-pokemonEncounter = await pokemonEncounterApi(pokemonName);
-
-// console.log(pokemon);
-// console.log(pokemonSpecies)
-// console.log(pokemonEncounter)
+LoadOut(pokemonGlobalName)
+search.value = "pikachu";
 
 
 
