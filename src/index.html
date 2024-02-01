@@ -14,7 +14,7 @@
     <div id="drawer-example"
         class="fixed top-0 left-0 z-40 h-full p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800"
         tabindex="-1" aria-labelledby="drawer-label">
-        <div  class="container font-content text-2xl">
+        <div class="container font-content text-2xl">
             <div class="flex justify-center items-center">
                 <div class="title">
                     Favorites
@@ -43,22 +43,29 @@
         </h2>
         <input id="search" class="ring-0">
 
-        <div class="buttons flex flex-col lg:flex-row space-y-8 lg:space-y-0">
-            <button id="randomBtn" type="button" class="greenBtn">Random</button>
-            <button id="searchBtn" type="button" class="blueBtn">Search</button>
-            <button id="favoritesBtn" type="button" class="redBtn" data-drawer-target="drawer-example"
-                data-drawer-show="drawer-example" aria-controls="drawer-example">Favorites</button>
+        <div class="buttons flex justify-center items-center flex-col lg:flex-row space-y-8 lg:space-y-0">
+            <div>
+                <button id="randomBtn" type="button" class="greenBtn">Random</button>
+            </div>
+            <div>
+                <button id="searchBtn" type="button" class="blueBtn">Search</button>
+            </div>
+            <div>
+                <button id="favoritesBtn" type="button" class="redBtn" data-drawer-target="drawer-example"
+                    data-drawer-show="drawer-example" aria-controls="drawer-example">Favorites</button>
+            </div>
+
         </div>
 
         <div class="flex flex-row items-start">
             <img id="pokemonImage" class="w-[300px]" src="../assets/pikachu.png" alt="pokemon">
-            <img id="shinyBtn" class="w-8" src="../assets/Sparkle.png" alt="">
+            <img id="shinyBtn" class="w-8 cursor-pointer" src="../assets/Sparkle.png" alt="">
         </div>
 
         <div class="flex flex-row items-baseline justify-between space-x-[30px]">
             <h3 id="indexNumber" class="text-xl">#25</h3>
             <h2 id="pokemonTitle" class="text-2xl ">Pikachu</h2>
-            <img class="w-[25px]" id="heartBtn" src="../assets/Heart.png" alt="heart">
+            <img class="w-[25px] cursor-pointer" id="heartBtn" src="../assets/Heart.png" alt="heart">
         </div>
 
         <div class="flex flex-col lg:flex-row text-lg md:text-xl px-10 xl:px-60 space-y-5">
@@ -70,7 +77,7 @@
                     Evolutions
                 </div>
                 <div id="evolutionContainer"
-                    class="flex flex-col justify-start w-[100%] h-[250px] lg:ml-4 border-2 border-white overflow-y-auto space-y-5 ^ *">
+                    class="flex flex-col justify-start w-[100%] h-[260px] lg:ml-4 border-2 border-white overflow-y-auto space-y-5 ^ * p-2">
                     <div class="flex flex-row justify-center">
                         <div class="flex flex-col justify-end">
                             <div><img class="w-[75px]" src="../assets/pichu.gif" alt="pokemon sprite"></div>
@@ -102,7 +109,8 @@
                 </div>
                 <div class="flex flex-row">
                     <div class="w-[30%] flex justify-end">Type:</div>
-                    <div id="typeContainer" class="w-[70%] ml-4 flex flex-col md:flex-row items-center space-y-4 ^ * md:space-y-0 ^ *">
+                    <div id="typeContainer"
+                        class="w-[70%] ml-4 flex flex-col md:flex-row items-center space-y-4 ^ * md:space-y-0 ^ *">
                         <img class="h-[30px]" src="../assets/elementTypes/electric.png" alt="">
                     </div>
                 </div>
@@ -116,7 +124,8 @@
                 </div>
                 <div class="flex flex-col lg:flex-row">
                     <div class="w-[30%] flex justify-end mb-4">Moves:</div>
-                    <div id="movesTxt" class="lg:w-[70%] h-[170px] lg:ml-4 border-2 border-white overflow-y-auto">Mega
+                    <div id="movesTxt" class="lg:w-[70%] h-[170px] lg:ml-4 border-2 border-white overflow-y-auto px-2 ">
+                        Mega
                         Punch,
                         Pay Day, Thunder Punch, Slam, Double Kick, Mega Kick, Headbutt, Body Slam, Take Down, Double
                         Edge, Tail Whip, Growl, Surf, Submission, Counter, Seismic Toss, Strength, Thunder Shock,

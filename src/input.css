@@ -14,9 +14,9 @@
 @layer components {
     /* bg-light-gray w-1/2 text-center p-2.5  */
     #search { @apply bg-light-gray w-full lg:w-1/2 text-center font-content text-2xl p-2.5 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 }
-    .greenBtn {@apply text-black bg-lime hover:bg-dark-lime focus:outline-none   font-medium rounded-full text-sm px-5 text-center me-2 mb-2 dark:bg-dark-lime dark:hover:bg-lime w-[100px] h-[25px]}
-    .blueBtn {@apply text-black bg-cyan hover:bg-dark-cyan focus:outline-none   font-medium rounded-full text-sm px-5  text-center me-2 mb-2 dark:bg-dark-cyan dark:hover:bg-cyan w-[100px] h-[25px]}
-    .redBtn {@apply text-black bg-light-red hover:bg-red-500 focus:outline-none   font-medium rounded-full text-sm px-5  text-center me-2 mb-2 dark:bg-red-500 dark:hover:bg-light-red w-[100px] h-[25px]}
+    .greenBtn {@apply text-black bg-lime hover:bg-dark-lime focus:outline-none   font-medium rounded-full text-sm px-5 text-center mx-2 my-2 dark:bg-dark-lime dark:hover:bg-lime w-[100px] h-[25px]}
+    .blueBtn {@apply text-black bg-cyan hover:bg-dark-cyan focus:outline-none   font-medium rounded-full text-sm px-5  text-center mx-2 my-2 dark:bg-dark-cyan dark:hover:bg-cyan w-[100px] h-[25px]}
+    .redBtn {@apply text-black bg-light-red hover:bg-red-500 focus:outline-none   font-medium rounded-full text-sm px-5  text-center mx-2 my-2 dark:bg-red-500 dark:hover:bg-light-red w-[100px] h-[25px]}
     
     /* .pokemonSubHeader{
         width: max(25vw,max-content);

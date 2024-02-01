@@ -6,7 +6,7 @@
 
 // Created an online interface to access pokemon data from a pokemon api
 
-// 
+// Comments from Peer Review have been addressed JP (2:35 pm)
 
 // Peer Reviewed By: Tyler Nguyen (1:54PM)
 
