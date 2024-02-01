@@ -6,7 +6,7 @@ import { saveToLocalStorage, getlocalStorage, removeFromLocalStorage, titleCase,
 let search = document.getElementById("search");
 let randomBtn = document.getElementById("randomBtn");
 let searchBtn = document.getElementById("searchBtn");
-let favoritesBtn = document.getElementById("favoritesBtn");
+// let favoritesBtn = document.getElementById("favoritesBtn");
 let shinyBtn = document.getElementById("shinyBtn");
 let heartBtn = document.getElementById("heartBtn");
 
@@ -36,6 +36,15 @@ let isShiny = false;
 let isFavorited = false;
 
 //Btn Functions
+
+randomBtn.addEventListener("click", async () => {
+    let randNum = Math.floor(Math.random() * 648) + 1;
+
+    await LoadOut(`${randNum}`)
+    search.value = pokemonGlobalName;
+
+})
+
 shinyBtn.addEventListener("click", () => {
 
     if (!isShiny) {
@@ -63,58 +72,78 @@ const heart = () => {
     if (!isFavorited) {
         isFavorited = true;
         heartBtn.src = "../assets/HeartFilled.png";
-        saveToLocalStorage(pokemon.name);
-        AddToFavorites();
+        saveToLocalStorage(pokemonGlobalName + "," + pokemonGlobalID);
+        RefreshFavorites();
+
     } else {
         isFavorited = false;
         heartBtn.src = "../assets/Heart.png";
-        removeFromLocalStorage(pokemon.name)
+        removeFromLocalStorage(pokemonGlobalName + "," + pokemonGlobalID)
+        RefreshFavorites();
     }
 }
 
-const RemoveFromFavorites = () => {
-
+const RefreshFavorites = () => {
+    let favorites = getlocalStorage();
+    favoritesContainer.innerHTML = "";
+    favorites.forEach(x => {
+        let y = x.split(',');
+        let pokemonName = y[0];
+        let pokemonID = y[1];
+        AddToFavorites(pokemonName, pokemonID);
+    })
 }
 
-const AddToFavorites = () => {
+const AddToFavorites = (pokemonName, pokemonID) => {
     const newFavorite = document.createElement("div");
-    newFavorite.classList = "flex justify-between border-black border-t-2 border-b-2 px-2";
-    newFavorite.id = pokemonGlobalName;
+    newFavorite.classList = "flex justify-between border-black border-t-2 px-2";
+
+    const pokemonCell = document.createElement("div");
+    pokemonCell.classList = "cursor-pointer flex justify-between w-[87%]"
+
+    pokemonCell.addEventListener("click", async () => {
+        await LoadOut(pokemonName);
+        search.value = pokemonGlobalName;
+    })
 
     const favoritePokemon = document.createElement("div");
-    favoritePokemon.innerText = pokemonGlobalName;
+    favoritePokemon.innerText = pokemonName;
 
     const favoritePokemonID = document.createElement("div");
-    favoritePokemonID.innerText = pokemonGlobalID;
+    favoritePokemonID.innerText = pokemonID;
 
     const exitBtn = document.createElement("strong");
     exitBtn.classList = "text-red-600";
     exitBtn.innerText = "X"
 
-    exitBtn.addEventListener("click", function() {
 
-        removeFromLocalStorage(newFavorite.id)
-        // let favorites = getlocalStorage();
-        
+
+    exitBtn.addEventListener("click", () => {
+
+        removeFromLocalStorage(pokemonName + "," + pokemonID)
         newFavorite.remove();
+        let favorites = getlocalStorage();
+        if (favorites.includes(pokemonGlobalName + "," + pokemonGlobalID)) {
+            isFavorited = true;
+            heartBtn.src = "../assets/HeartFilled.png";
+        } else {
+            isFavorited = false;
+            heartBtn.src = "../assets/Heart.png";
+        };
     });
 
-    newFavorite.appendChild(favoritePokemon);
-    newFavorite.appendChild(favoritePokemonID);
+    pokemonCell.appendChild(favoritePokemon);
+    pokemonCell.appendChild(favoritePokemonID);
+
+
+    newFavorite.appendChild(pokemonCell);
+
     newFavorite.appendChild(exitBtn);
 
     favoritesContainer.appendChild(newFavorite);
 }
 
-// <div class="favoriteExample flex justify-between border-black border-t-2 border-b-2 px-2">
-//     <div class="fpokemon">Pikachu</div>
-//     <div class="fpokemonId">#25</div>
-//     <div class="exit text-red-600"><strong>X</strong></div>
-// </div>
-
 //search functions
-
-
 
 searchBtn.addEventListener('click', async (event) => {
     //On enter I want this function to run
@@ -170,7 +199,7 @@ const LoadOut = async (pokemonName) => {
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
     };
 
-    if (favorites.includes(pokemon.name)) {
+    if (favorites.includes(pokemonGlobalName + "," + pokemonGlobalID)) {
         isFavorited = true;
         heartBtn.src = "../assets/HeartFilled.png";
     } else {
@@ -272,7 +301,7 @@ const GetLocation = () => {
         let randomLocationIndex = Math.floor(Math.random() * pokemonEncounter.length);
 
 
-        location = titleCase(pokemonEncounter[randomLocationIndex].location_area.name.replaceAll("-", " ")) + " from Pokèmon " + titleCase(pokemonEncounter[randomLocationIndex].version_details[0].version.name);
+        location = titleCase(pokemonEncounter[randomLocationIndex].location_area.name.replaceAll("-", " ")) + " from " + titleCase(pokemonEncounter[randomLocationIndex].version_details[0].version.name);
 
     }
 
@@ -327,11 +356,6 @@ const GetEvolutions = async () => {
     console.log("here")
     evolutionContainer.innerHTML = "";
 
-
-
-
-
-
     let evolution = pokemonEvolutionChain.chain;
 
     if (evolution.evolves_to[0]) {
@@ -353,7 +377,12 @@ const GetEvolutions = async () => {
                 arrow.innerText = "=>";
                 arrow.classList = "text-3xl"
                 let pokemonContainer = document.createElement("div");
-                pokemonContainer.classList = "flex flex-col justify-end";
+                pokemonContainer.classList = "flex flex-col justify-end cursor-pointer";
+
+                pokemonContainer.addEventListener("click", async() =>{
+                    await LoadOut(`${evolution.species.name}`)
+                    search.value = evolution.species.name;
+                })
 
 
                 arrowContainer.appendChild(arrow);
@@ -388,7 +417,12 @@ const GetEvolutions = async () => {
             let pokemonEvoTitle = document.createElement("div");
             pokemonEvoTitle.classList = "flex justify-center";
             let pokemonContainer = document.createElement("div");
-            pokemonContainer.classList = "flex flex-col justify-end";
+            pokemonContainer.classList = "flex flex-col justify-end cursor-pointer";
+            pokemonContainer.addEventListener("click", async() =>{
+                await LoadOut(`${evolution.species.name}`)
+                search.value = evolution.species.name;
+            })
+
             await GetNextEvo(evolution.evolves_to[counter])
 
 
@@ -461,6 +495,7 @@ const pokemonEvolutionChainApi = async (url) => {
 
 LoadOut(pokemonGlobalName)
 search.value = "pikachu";
+RefreshFavorites();
 
 
 

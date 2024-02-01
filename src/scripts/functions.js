@@ -40,7 +40,7 @@ const removeFromLocalStorage = (pokemon) => {
 
 const saveToLocalStorageShiny = (pokemon) => {
     
-    let shinies = getlocalStorage();  
+    let shinies = getlocalStorageShiny();  
       
     if(!shinies.includes(pokemon)) {
         shinies.push(pokemon);
