@@ -27,6 +27,7 @@ let movesTxt = document.getElementById("movesTxt");
 let pokemon;
 let pokemonSpecies;
 let pokemonEncounter;
+let pokemonEvolutionChain;
 let pokemonName = "pikachu";
 
 let isShiny = false;
@@ -39,10 +40,12 @@ shinyBtn.addEventListener("click", () => {
         isShiny = true;
         shinyBtn.src = "../assets/SparkleShiny.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_shiny;
+        GetEvolutions();
     } else {
         isShiny = false;
         shinyBtn.src = "../assets/Sparkle.png";
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
+        GetEvolutions();
     }
 });
 
@@ -126,6 +129,8 @@ searchBtn.addEventListener('click', async (event) => {
     pokemonSpecies = await pokemonSpeciesApi(pokemonName);
     pokemon = await pokemonApi(pokemonName);
     pokemonEncounter = await pokemonEncounterApi(pokemonName);
+    let url = pokemonSpecies.evolution_chain.url;
+    pokemonEvolutionChain = await pokemonEvolutionChainApi(url);
 
 
     pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
@@ -138,6 +143,7 @@ searchBtn.addEventListener('click', async (event) => {
     abilitiesTxt.innerText = GetAbilities();
     movesTxt.innerText = GetMoves();
     GetTypes();
+    GetEvolutions();
 })
 
 search.addEventListener('keydown', async (event) => {
@@ -149,18 +155,21 @@ search.addEventListener('keydown', async (event) => {
         pokemonSpecies = await pokemonSpeciesApi(pokemonName);
         pokemon = await pokemonApi(pokemonName);
         pokemonEncounter = await pokemonEncounterApi(pokemonName);
+        let url = pokemonSpecies.evolution_chain.url;
+        pokemonEvolutionChain = await pokemonEvolutionChainApi(url);
 
 
         pokemonImage.src = pokemon.sprites.other["official-artwork"].front_default;
         indexNumber.innerText = "#" + pokemon.id;
         pokemonTitle.innerText = titleCase(pokemon.name);
-    
+
         descriptionTxt.innerText = GetDescription();
         genTxt.innerText = GetGeneration();
         locationTxt.innerText = GetLocation();
         abilitiesTxt.innerText = GetAbilities();
         movesTxt.innerText = GetMoves();
         GetTypes();
+        GetEvolutions();
     }
 })
 
@@ -173,7 +182,7 @@ const GetDescription = () => {
         randomEntryLocation = Math.floor(Math.random() * pokemonSpecies.flavor_text_entries.length);
     } while (pokemonSpecies.flavor_text_entries[randomEntryLocation].language.name != "en")
 
-    return pokemonSpecies.flavor_text_entries[randomEntryLocation].flavor_text.replaceAll("\f","").replaceAll("\n","");
+    return pokemonSpecies.flavor_text_entries[randomEntryLocation].flavor_text.replaceAll("\f", " ").replaceAll("\n", " ");
 }
 
 const GetGeneration = () => {
@@ -254,12 +263,12 @@ const GetGeneration = () => {
 const GetLocation = () => {
     let location = "N/A";
 
-    if(pokemonEncounter[0]){
+    if (pokemonEncounter[0]) {
         let randomLocationIndex = Math.floor(Math.random() * pokemonEncounter.length);
 
 
-        location = titleCase(pokemonEncounter[randomLocationIndex].location_area.name.replaceAll("-"," ")) + " from Pokèmon " + titleCase(pokemonEncounter[randomLocationIndex].version_details[0].version.name);
-    
+        location = titleCase(pokemonEncounter[randomLocationIndex].location_area.name.replaceAll("-", " ")) + " from Pokèmon " + titleCase(pokemonEncounter[randomLocationIndex].version_details[0].version.name);
+
     }
 
     return location;
@@ -267,23 +276,23 @@ const GetLocation = () => {
 
 const GetAbilities = () => {
     let abilities = "";
-    if(pokemon.abilities[0]){
-        pokemon.abilities.forEach(x =>{
+    if (pokemon.abilities[0]) {
+        pokemon.abilities.forEach(x => {
             abilities += x.ability.name + ", ";
         })
-    }   
-    return titleCase(abilities.substring(0,abilities.length - 2));
+    }
+    return titleCase(abilities.substring(0, abilities.length - 2));
 
 }
 
 const GetMoves = () => {
     let moves = "";
-    if(pokemon.moves[0]){
-        pokemon.moves.forEach(x =>{
+    if (pokemon.moves[0]) {
+        pokemon.moves.forEach(x => {
             moves += x.move.name + ", ";
         })
-    }   
-    return titleCase(moves.substring(0,moves.length - 2));
+    }
+    return titleCase(moves.substring(0, moves.length - 2));
 }
 
 const GetTypes = () => {
@@ -292,7 +301,7 @@ const GetTypes = () => {
 
     typeContainer.innerHTML = "";
 
-    if(pokemon.types[0]){
+    if (pokemon.types[0]) {
         pokemon.types.forEach(x => {
 
             newImg = document.createElement("img");
@@ -307,6 +316,84 @@ const GetTypes = () => {
 
     }
     console.log(typeArray);
+}
+
+const GetEvolutions = async () => {
+    console.log("here")
+    evolutionContainer.innerHTML = "";
+
+
+
+
+
+
+    let evolution = pokemonEvolutionChain.chain;
+
+    let counter = 0;
+    while (evolution.evolves_to[counter]) {
+
+        let evolutionLine = document.createElement("div");
+
+        const GetNextEvo = async (evolution) => {
+
+            let pokemonEvoGif = document.createElement("img");
+            pokemonEvoGif.classList = "w-[75px]";
+            let pokemonEvoTitle = document.createElement("div");
+            pokemonEvoTitle.classList = "flex justify-center";
+            let arrowContainer = document.createElement("div");
+            arrowContainer.classList = "flex items-center mx-5";            
+            let arrow = document.createElement("div");
+            arrow.innerText = "=>";
+            arrow.classList = "text-3xl"            
+            let pokemonContainer = document.createElement("div");
+            pokemonContainer.classList = "flex flex-col justify-end";
+
+
+            arrowContainer.appendChild(arrow);
+            evolutionLine.appendChild(arrowContainer);
+            pokemonEvoGif.src = await GetSprite(evolution.species.name);
+            pokemonEvoTitle.innerText = evolution.species.name;
+            pokemonContainer.appendChild(pokemonEvoGif);
+            pokemonContainer.appendChild(pokemonEvoTitle);
+            evolutionLine.appendChild(pokemonContainer);
+            evolutionLine.className = "flex flex-row justify-center";
+            let counter = 0;
+            while (evolution.evolves_to[counter]) {
+                await GetNextEvo(evolution.evolves_to[counter])
+                counter++;
+                console.log("Help")
+            }
+            evolutionContainer.appendChild(evolutionLine);
+        }
+        let pokemonEvoGif = document.createElement("img");
+        pokemonEvoGif.classList = "w-[75px]";
+        let pokemonEvoTitle = document.createElement("div");
+        pokemonEvoTitle.classList = "flex justify-center";         
+        let pokemonContainer = document.createElement("div");
+        pokemonContainer.classList = "flex flex-col justify-end";
+        await GetNextEvo(evolution.evolves_to[counter])
+
+
+        pokemonEvoGif.src = await GetSprite(evolution.species.name);
+        pokemonEvoTitle.innerText = evolution.species.name;
+        pokemonContainer.appendChild(pokemonEvoGif);
+        pokemonContainer.appendChild(pokemonEvoTitle);
+        evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
+        evolutionContainer.appendChild(evolutionLine);
+        evolutionLine.className = "flex flex-row justify-center";
+        counter++;
+        console.log("Help")
+
+
+    }
+
+}
+
+const GetSprite = async (pokemon) => {
+    const promise = await fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon);
+    const data = await promise.json();
+
+    return isShiny ? data.sprites.other.showdown.front_shiny : data.sprites.other.showdown.front_default
 }
 
 //fetch functions
@@ -329,14 +416,20 @@ const pokemonEncounterApi = async (pokemon) => {
     return data;
 }
 
+const pokemonEvolutionChainApi = async (url) => {
+    const promise = await fetch(url);
+    const data = await promise.json();
+    return data;
+}
+
 
 pokemon = await pokemonApi(pokemonName);
 pokemonSpecies = await pokemonSpeciesApi(pokemonName);
 pokemonEncounter = await pokemonEncounterApi(pokemonName);
 
-console.log(pokemon);
-console.log(pokemonSpecies)
-console.log(pokemonEncounter)
+// console.log(pokemon);
+// console.log(pokemonSpecies)
+// console.log(pokemonEncounter)
 
 
 
