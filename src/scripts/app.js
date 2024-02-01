@@ -38,7 +38,7 @@ let isFavorited = false;
 //Btn Functions
 
 randomBtn.addEventListener("click", async () => {
-    let randNum = Math.floor(Math.random() * 648) + 1;
+    let randNum = Math.floor(Math.random() * 919) + 1;
 
     await LoadOut(`${randNum}`)
     search.value = pokemonGlobalName;
@@ -222,74 +222,38 @@ const GetDescription = () => {
 const GetGeneration = () => {
 
     let gen = "??";
-    if (pokemon.game_indices[0]) {
-        let game = pokemon.game_indices[0].version.name;
-        switch (game) {
-            case "red":
-                gen = "1st";
-                break;
-            case "blue":
-                gen = "1st";
-                break;
-            case "yellow":
-                gen = "1st";
-                break;
-            case "gold":
-                gen = "2nd";
-                break;
-            case "silver":
-                gen = "2nd";
-                break;
-            case "crystal":
-                gen = "2nd";
-                break;
-            case "ruby":
-                gen = "3rd";
-                break;
-            case "sapphire":
-                gen = "3rd";
-                break;
-            case "emerald":
-                gen = "3rd";
-                break;
-            case "firered":
-                gen = "1st";
-                break;
-            case "leafgreen":
-                gen = "1st";
-                break;
-            case "diamond":
-                gen = "4th";
-                break;
-            case "pearl":
-                gen = "4th";
-                break;
-            case "platinum":
-                gen = "4th";
-                break;
-            case "heartgold":
-                gen = "2nd";
-                break;
-            case "soulsilver":
-                gen = "2nd";
-                break;
-            case "black":
-                gen = "5th";
-                break;
-            case "white":
-                gen = "5th";
-                break;
-            case "black-2":
-                gen = "5th";
-                break;
-            case "white-2":
-                gen = "5th";
-                break;
-            default:
-                gen = "???";
-        }
+    let generation = pokemonSpecies.generation.name;
+    switch (generation) {
+        case "generation-i":
+            gen = "1st";
+            break;
+        case "generation-ii":
+            gen = "2nd";
+            break;
+        case "generation-iii":
+            gen = "3rd";
+            break;
+        case "generation-iv":
+            gen = "4th";
+            break;
+        case "generation-v":
+            gen = "5th";
+            break;
+        case "generation-vi":
+            gen = "6th";
+            break;
+        case "generation-vii":
+            gen = "7th";
+            break;
+        case "generation-viii":
+            gen = "8th";
+            break;
+        case "generation-ix":
+            gen = "9th";
+            break;
+        default:
+            gen = "???";
     }
-
 
     return gen;
 }
@@ -379,7 +343,7 @@ const GetEvolutions = async () => {
                 let pokemonContainer = document.createElement("div");
                 pokemonContainer.classList = "flex flex-col justify-end cursor-pointer";
 
-                pokemonContainer.addEventListener("click", async() =>{
+                pokemonContainer.addEventListener("click", async () => {
                     await LoadOut(`${evolution.species.name}`)
                     search.value = evolution.species.name;
                 })
@@ -418,7 +382,7 @@ const GetEvolutions = async () => {
             pokemonEvoTitle.classList = "flex justify-center";
             let pokemonContainer = document.createElement("div");
             pokemonContainer.classList = "flex flex-col justify-end cursor-pointer";
-            pokemonContainer.addEventListener("click", async() =>{
+            pokemonContainer.addEventListener("click", async () => {
                 await LoadOut(`${evolution.species.name}`)
                 search.value = evolution.species.name;
             })
