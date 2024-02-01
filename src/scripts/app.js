@@ -329,8 +329,10 @@ const GetEvolutions = async () => {
 
     let evolution = pokemonEvolutionChain.chain;
 
+    if(evolution.evolves_to[0]){
     let counter = 0;
-    while (evolution.evolves_to[counter]) {
+    let anotherBranch = false;
+    while (evolution.evolves_to[counter] || anotherBranch) {
 
         let evolutionLine = document.createElement("div");
 
@@ -357,12 +359,23 @@ const GetEvolutions = async () => {
             pokemonContainer.appendChild(pokemonEvoTitle);
             evolutionLine.appendChild(pokemonContainer);
             evolutionLine.className = "flex flex-row justify-center";
+
             let counter = 0;
-            while (evolution.evolves_to[counter]) {
+
+            if(anotherBranch){
+                counter++;
+                anotherBranch = false;
+            }
+
+            if (evolution.evolves_to[counter]) {
+
                 await GetNextEvo(evolution.evolves_to[counter])
                 counter++;
-                console.log("Help")
             }
+            if (evolution.evolves_to[counter]) {
+                anotherBranch = true;
+            }
+
             evolutionContainer.appendChild(evolutionLine);
         }
         let pokemonEvoGif = document.createElement("img");
@@ -381,11 +394,29 @@ const GetEvolutions = async () => {
         evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
         evolutionContainer.appendChild(evolutionLine);
         evolutionLine.className = "flex flex-row justify-center";
-        counter++;
-        console.log("Help")
+        if(!anotherBranch){counter++;};
 
 
     }
+    }else{
+        let evolutionLine = document.createElement("div");
+        let pokemonEvoGif = document.createElement("img");
+        pokemonEvoGif.classList = "w-[75px]";
+        let pokemonEvoTitle = document.createElement("div");
+        pokemonEvoTitle.classList = "flex justify-center";         
+        let pokemonContainer = document.createElement("div");
+        pokemonContainer.classList = "flex flex-col justify-end";
+
+
+        pokemonEvoGif.src = await GetSprite(evolution.species.name);
+        pokemonEvoTitle.innerText = evolution.species.name;
+        pokemonContainer.appendChild(pokemonEvoGif);
+        pokemonContainer.appendChild(pokemonEvoTitle);
+        evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
+        evolutionContainer.appendChild(evolutionLine);
+        evolutionLine.className = "flex flex-row justify-center";
+    }
+
 
 }
 
