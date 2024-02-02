@@ -8,7 +8,7 @@
     <title>Pokemanac</title>
 </head>
 
-<body class="bg-ash">
+<body class="bg-ash overflow-x-hidden">
 
     <!-- drawer component -->
     <div id="drawer-example"
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div class="font-content text-white h-full w-full flex flex-col items-center px-16 py-8 space-y-5 > *">
+    <div class="font-content text-white h-full w-full flex flex-col items-center md:px-16 py-8 space-y-5 > *">
         <h1 class="text-3xl  font-title">
             POKÉMANAC
         </h1>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="flex flex-row items-start">
-            <img id="pokemonImage" class="w-[300px]" src="./assets/pikachu.png" alt="pokemon">
+            <img id="pokemonImage" class="w-[250px] md:w-[300px]" src="./assets/pikachu.png" alt="pokemon">
             <img id="shinyBtn" class="w-8 cursor-pointer" src="./assets/Sparkle.png" alt="sparkle">
         </div>
 
@@ -68,16 +68,16 @@
             <img class="w-[25px] cursor-pointer" id="heartBtn" src="./assets/Heart.png" alt="heart">
         </div>
 
-        <div class="flex flex-col lg:flex-row text-lg md:text-xl px-10 xl:px-60 space-y-5">
+        <div class="flex flex-col  lg:flex-row text-lg md:text-xl px-4 xl:px-60 space-y-5">
             <div class="lg:w-[45%] flex flex-col justify-between">
-                <div id="descriptionTxt" class="text-xl">
+                <div id="descriptionTxt" class="text-xl mb-4">
                     When several of these POKéMON gather, their electricity could build and cause lightning storms.
                 </div>
                 <div class="hidden text-xl underline lg:block ">
                     Evolutions
                 </div>
                 <div id="evolutionContainer"
-                    class="flex flex-col justify-start w-[100%] h-[260px] lg:ml-4 border-2 border-white overflow-y-auto space-y-5 ^ * p-2">
+                    class="flex flex-col justify-start w-[90vw] md:w-[95%] h-[260px] lg:ml-4 border-2 border-white overflow-y-auto space-y-5 ^ * p-2">
                     <div class="flex flex-row justify-center">
                         <div class="flex flex-col justify-end">
                             <div><img class="w-[75px]" src="./assets/pichu.gif" alt="pokemon sprite"></div>
@@ -110,7 +110,7 @@
                 <div class="flex flex-row">
                     <div class="w-[30%] flex justify-end">Type:</div>
                     <div id="typeContainer"
-                        class="w-[70%] ml-4 flex flex-col md:flex-row items-center space-y-4 ^ * md:space-y-0 ^ *">
+                        class="w-[70%] ml-4 flex flex-col items-baseline md:flex-row space-y-4 ^ * md:space-y-0 ^ *">
                         <img class="h-[30px]" src="./assets/elementTypes/electric.png" alt="">
                     </div>
                 </div>
@@ -148,7 +148,7 @@
 
     <script type="module" src="./scripts/app.js"></script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-    <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
+    <script src="./node_modules/flowbite/dist/flowbite.min.js"></script>
 </body>
 
 </html>

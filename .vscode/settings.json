@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/ed6bd4ea-8bf1-422e-b199-46c2b943dc05/resourceGroups/Pokemanac_group/providers/Microsoft.Web/sites/Pokemanac",
+    "appService.deploySubpath": "src"
+}

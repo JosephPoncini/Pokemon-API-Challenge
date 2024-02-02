@@ -303,7 +303,7 @@ const GetTypes = () => {
         pokemon.types.forEach(x => {
 
             newImg = document.createElement("img");
-            newImg.src = "../assets/elementTypes/" + x.type.name + ".png";
+            newImg.src = "./assets/elementTypes/" + x.type.name + ".png";
             newImg.className = "h-[30px] pr-5";
 
             typeContainer.appendChild(newImg);
@@ -332,16 +332,16 @@ const GetEvolutions = async () => {
             const GetNextEvo = async (evolution) => {
 
                 let pokemonEvoGif = document.createElement("img");
-                pokemonEvoGif.classList = "w-[75px]";
+                pokemonEvoGif.classList = "w-[60px] md:w-[75px]";
                 let pokemonEvoTitle = document.createElement("div");
                 pokemonEvoTitle.classList = "flex justify-center";
                 let arrowContainer = document.createElement("div");
-                arrowContainer.classList = "flex items-center mx-5";
+                arrowContainer.classList = "flex items-center mx-4";
                 let arrow = document.createElement("div");
                 arrow.innerText = "=>";
                 arrow.classList = "text-3xl"
                 let pokemonContainer = document.createElement("div");
-                pokemonContainer.classList = "flex flex-col justify-end cursor-pointer";
+                pokemonContainer.classList = "flex flex-col justify-end cursor-pointer ";
 
                 pokemonContainer.addEventListener("click", async () => {
                     await LoadOut(`${evolution.species.name}`)
@@ -356,7 +356,7 @@ const GetEvolutions = async () => {
                 pokemonContainer.appendChild(pokemonEvoGif);
                 pokemonContainer.appendChild(pokemonEvoTitle);
                 evolutionLine.appendChild(pokemonContainer);
-                evolutionLine.className = "flex flex-row justify-center";
+                evolutionLine.className = "flex flex-row flex-wrap justify-center";
 
                 let counter = 0;
 
@@ -377,7 +377,7 @@ const GetEvolutions = async () => {
                 evolutionContainer.appendChild(evolutionLine);
             }
             let pokemonEvoGif = document.createElement("img");
-            pokemonEvoGif.classList = "w-[75px]";
+            pokemonEvoGif.classList = "w-[60px] md:w-[75px]";
             let pokemonEvoTitle = document.createElement("div");
             pokemonEvoTitle.classList = "flex justify-center";
             let pokemonContainer = document.createElement("div");
@@ -396,7 +396,7 @@ const GetEvolutions = async () => {
             pokemonContainer.appendChild(pokemonEvoTitle);
             evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
             evolutionContainer.appendChild(evolutionLine);
-            evolutionLine.className = "flex flex-row justify-center";
+            evolutionLine.className = "flex flex-row justify-center flex-wrap";
             if (!anotherBranch) { counter++; };
 
 
@@ -404,7 +404,7 @@ const GetEvolutions = async () => {
     } else {
         let evolutionLine = document.createElement("div");
         let pokemonEvoGif = document.createElement("img");
-        pokemonEvoGif.classList = "w-[75px]";
+        pokemonEvoGif.classList = "w-[60px] md:w-[75px]";
         let pokemonEvoTitle = document.createElement("div");
         pokemonEvoTitle.classList = "flex justify-center";
         let pokemonContainer = document.createElement("div");
