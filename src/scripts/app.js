@@ -417,7 +417,7 @@ const GetEvolutions = async () => {
         pokemonContainer.appendChild(pokemonEvoTitle);
         evolutionLine.insertBefore(pokemonContainer, evolutionLine.firstChild);
         evolutionContainer.appendChild(evolutionLine);
-        evolutionLine.className = "flex flex-row justify-center";
+        evolutionLine.className = "flex flex-row flex-wrap justify-center";
     }
 
 
